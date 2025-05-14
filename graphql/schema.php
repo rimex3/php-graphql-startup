@@ -27,7 +27,19 @@ $QueryType = new ObjectType([
     ]
 ]);
 
+$MutationType = new ObjectType([
+    "name" => "mutation",
+    "fields" => [
+        "addNew" => [
+            "type" => $myType,
+            "args" => ["title" => Type::string()],
+            "resolvers" => fn($root, $args, $context) => [],
+        ]
+    ]
+]);
+
 
 return new Schema([
     "query" => $QueryType,
+    "mutation" => $MutationType
 ]);
