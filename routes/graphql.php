@@ -5,6 +5,10 @@ use GraphQL\Error\FormattedError;
 use GraphQL\Error\DebugFlag;
 
 require_once '../vendor/autoload.php';
+require_once '../config/db.php';
+
+$db = new Database();
+$conn = $db->getConnection();
 
 $schema = require_once '../graphql/schema.php';
 
@@ -15,7 +19,7 @@ $query = $rawInput['query'] ?? null;
 $variables = $rawInput['variables'] ?? [];
 
 try {
-    $result = GraphQL::executeQuery($schema, $query, null, null, $variables);
+    $result = GraphQL::executeQuery($schema, $query, null, ["conn" => $conn], $variables);
     $output = $result->toArray(DebugFlag::INCLUDE_DEBUG_MESSAGE | DebugFlag::INCLUDE_TRACE);
 } catch (Throwable $err) {
     http_response_code(500);
